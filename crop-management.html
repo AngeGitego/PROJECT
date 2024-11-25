@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Management</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #56ab2f, #a8e063);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #fff;
+    }
+    h1 {
+      font-size: 28px;
+      text-shadow: 1px 1px 2px #333;
+      margin-bottom: 20px;
+    }
+    .container {
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+    }
+    .prompt {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Crop Management Tool</h1>
+  <div class="container">
+    <p class="prompt">Would you like to explore new agricultural techniques?</p>
+    <button onclick="window.location.href='techniques.html'">Learn Techniques</button>
+
+    <p class="prompt">Or, search for a crop to get best practices:</p>
+    <div class="search-bar">
+      <input type="text" id="search-crop" placeholder="Search for a crop">
+      <button onclick="searchCrop()">Search</button>
+    </div>
+  </div>
+
+  <script>
+    function searchCrop() {
+      const crop = document.getElementById('search-crop').value;
+      if (crop.trim() === '') {
+        alert('Please enter a crop to search.');
+        return;
+      }
+      window.location.href = `crop-details.html?crop=${encodeURIComponent(crop)}`;
+    }
+  </script>
+</body>
+</html>

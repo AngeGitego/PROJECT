@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f9f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+    }
+    h1 {
+      color: #4CAF50;
+      font-size: 24px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .link a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Log In</h1>
+    <input type="text" id="login-phone" placeholder="Phone Number"><br>
+    <input type="password" id="login-password" placeholder="Password"><br>
+    <button id="login-btn">Log In</button>
+    <div class="link">
+      Don't have an account? <a href="signup.html">Sign up</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      const phone_number = document.getElementById('login-phone').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const response = await fetch('http://localhost:3001/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone_number, password }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert(`Login successful! Welcome, ${data.user.name}`);
+          localStorage.setItem('token', data.token); // Save token for future requests
+          window.location.href = `dashboard.html?name=${encodeURIComponent(data.user.name)}`;
+        } else {
+          alert(data.error || 'Login failed.');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+      }
+    });
+  </script>
+</body>
+</html>

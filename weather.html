@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Updates</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color:(135deg, #56ab2f, #a8e063);
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .weather-item {
+      margin-bottom: 10px;
+    }
+    .weather-item img {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Weather Updates</h1>
+    <form id="weather-form">
+      <input type="text" id="location-input" placeholder="Enter location" required>
+      <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather-result"></div>
+  </div>
+  <script>
+    document.getElementById('weather-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const location = document.getElementById('location-input').value;
+      const resultDiv = document.getElementById('weather-result');
+      resultDiv.textContent = 'Loading...';
+
+      try {
+        const response = await fetch(`http://localhost:3001/api/weather?location=${location}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch weather updates.');
+        }
+
+        resultDiv.innerHTML = `
+          <div class="weather-item"><strong>Location:</strong> ${data.location}</div>
+          <div class="weather-item"><strong>Temperature:</strong> ${data.temperature} °C</div>
+          <div class="weather-item"><strong>Condition:</strong> ${data.condition}</div>
+          <div class="weather-item"><strong>Wind Speed:</strong> ${data.wind_speed} km/h</div>
+          <div class="weather-item"><strong>Humidity:</strong> ${data.humidity}%</div>
+          <div class="weather-item"><img src="${data.icon}" alt="Weather Icon"></div>
+        `;
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        resultDiv.textContent = 'Failed to load weather updates.';
+      }
+    });
+  </script>
+</body>
+</html>

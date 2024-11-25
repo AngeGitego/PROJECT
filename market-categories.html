@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Categories</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #a8e063, #56ab2f);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #fff;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px #333;
+    }
+    .category-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      width: 90%;
+      max-width: 1000px;
+      padding: 20px;
+    }
+    .category-box {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+    .category-box:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    }
+    .category-box h3 {
+      font-size: 20px;
+      margin: 15px 0;
+    }
+    .category-box img {
+      width: 60px;
+      height: 60px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select a Crop Category</h1>
+  <div class="category-container">
+    <div class="category-box" onclick="window.location.href='prices.html?category=cereals'">
+      <img src="https://www.world-grain.com/ext/resources/2022/05/10/Cereal-grains_cr-Adobe-Stock_E.jpg?height=667&t=1696274291&width=1080" alt="Cereals">
+      <h3>Cereals</h3>
+    </div>
+    <div class="category-box" onclick="window.location.href='prices.html?category=vegetables'">
+      <img src="https://www.bhg.com/thmb/Mwd_YEkDbVg_fPsUDcWr3eZk9W0=/5645x0/filters:no_upscale():strip_icc()/difference-between-fruits-vegetables-01-5f92e7ec706b463287bcfb46985698f9.jpg" alt="Vegetables">
+      <h3>Vegetables</h3>
+    </div>
+    <div class="category-box" onclick="window.location.href='prices.html?category=fruits'">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzytXSqyKAp1BYS-WHSEPN7DARMMVYcmSO5g&s" alt="Fruits">
+      <h3>Fruits</h3>
+    </div>
+    <div class="category-box" onclick="window.location.href='prices.html?category=roots'">
+      <img src="https://www.elearning.rtb.gov.rw/pluginfile.php/2306/mod_label/intro/Purpose%20Statement.PNG" alt="Roots">
+      <h3>Root Crops</h3>
+    </div>
+  </div>
+</body>
+</html>

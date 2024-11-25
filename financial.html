@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Tools</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .record {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Financial Tools</h1>
+    <form id="financial-form">
+      <input type="text" id="farmer-name" placeholder="Farmer Name" required>
+      <input type="text" id="crop-name" placeholder="Crop Name" required>
+      <input type="number" id="cost" placeholder="Cost (RWF)" required>
+      <input type="number" id="revenue" placeholder="Revenue (RWF)" required>
+      <button type="submit">Add Record</button>
+    </form>
+    <div id="records">
+      <h2>Financial Records</h2>
+      <div id="records-list">Loading...</div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('financial-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const farmerName = document.getElementById('farmer-name').value;
+      const cropName = document.getElementById('crop-name').value;
+      const cost = parseFloat(document.getElementById('cost').value);
+      const revenue = parseFloat(document.getElementById('revenue').value);
+
+      try {
+        const response = await fetch('http://localhost:3001/api/financial-tools', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ farmer_name: farmerName, crop_name: cropName, cost, revenue }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to add record.');
+        }
+
+        alert('Record added successfully!');
+        fetchRecords(); // Refresh records after adding
+      } catch (error) {
+        console.error('Error adding record:', error);
+      }
+    });
+
+    async function fetchRecords() {
+      try {
+        const response = await fetch('http://localhost:3001/api/financial-tools');
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch records.');
+        }
+
+        const recordsList = document.getElementById('records-list');
+        recordsList.innerHTML = ''; // Clear previous records
+        data.forEach(record => {
+          const div = document.createElement('div');
+          div.classList.add('record');
+          div.innerHTML = `
+            <p><strong>Farmer:</strong> ${record.farmer_name}</p>
+            <p><strong>Crop:</strong> ${record.crop_name}</p>
+            <p><strong>Cost:</strong> ${record.cost} RWF</p>
+            <p><strong>Revenue:</strong> ${record.revenue} RWF</p>
+            <p><strong>Profit:</strong> ${record.profit} RWF</p>
+          `;
+          recordsList.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Error fetching records:', error);
+        document.getElementById('records-list').textContent = 'Failed to load records.';
+      }
+    }
+
+    // Fetch records on page load
+    fetchRecords();
+  </script>
+</body>
+</html>

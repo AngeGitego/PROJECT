@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Prices</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color:(135deg, #56ab2f, #a8e063);
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .market-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+    .market-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Market Prices</h1>
+    <div id="market-list">Loading prices...</div>
+  </div>
+  <script>
+    async function fetchMarketPrices(category) {
+      try {
+        const response = await fetch(`http://localhost:3001/crop-management/market/${category}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch market prices.');
+        }
+
+        const marketList = document.getElementById('market-list');
+        marketList.innerHTML = ''; // Clear loading message
+        data.forEach(item => {
+          const div = document.createElement('div');
+          div.classList.add('market-item');
+          div.innerHTML = `
+            <h3>${item.crop_name}</h3>
+            <p>Current Price: ${item.current_price} RWF</p>
+            <p>Previous Price: ${item.previous_price} RWF</p>
+          `;
+          marketList.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Error fetching market prices:', error);
+        document.getElementById('market-list').textContent = 'Failed to load prices.';
+      }
+    }
+
+    // Extract category from the URL
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category');
+
+    if (category) {
+      fetchMarketPrices(category); // Fetch prices for the selected category
+    } else {
+      document.getElementById('market-list').textContent = 'No category selected.';
+    }
+  </script>
+</body>
+</html>
