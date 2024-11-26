@@ -57,7 +57,7 @@
       const revenue = parseFloat(document.getElementById('revenue').value);
 
       try {
-        const response = await fetch('http://localhost:3001/api/financial-tools', {
+        const response = await fetch('https://agukaweb.onrender.com/api/financial-tools', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ farmer_name: farmerName, crop_name: cropName, cost, revenue }),
@@ -78,7 +78,7 @@
 
     async function fetchRecords() {
       try {
-        const response = await fetch('http://localhost:3001/api/financial-tools');
+        const response = await fetch('https://agukaweb.onrender.com/api/financial-tools');
         const data = await response.json();
 
         if (!response.ok) {
