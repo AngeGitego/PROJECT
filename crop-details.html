@@ -48,9 +48,13 @@
       const crop = params.get('crop');
       document.getElementById('crop-name').textContent = crop;
 
-      try {
-        const response = await fetch(`http://localhost:3001/crop-management/${crop}`);
-        const data = await response.json();
+  try {
+    const response = await fetch(`https://agukaweb.onrender.com/crop-management/${crop}`);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to fetch crop details.');
+    }
 
         const detailsContainer = document.getElementById('crop-details');
         detailsContainer.innerHTML = `
