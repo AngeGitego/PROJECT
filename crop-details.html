@@ -44,36 +44,26 @@
 
   <script>
     async function fetchCropDetails() {
-  const params = new URLSearchParams(window.location.search);
-  const crop = params.get('crop');
+      const params = new URLSearchParams(window.location.search);
+      const crop = params.get('crop');
+      document.getElementById('crop-name').textContent = crop;
 
-  if (!crop) {
-    document.getElementById('crop-details').textContent = 'No crop selected.';
-    return;
-  }
+      try {
+        const response = await fetch(`http://localhost:3001/crop-management/${crop}`);
+        const data = await response.json();
 
-  try {
-    const response = await fetch(`http://localhost:3001/crop-management/${crop}`);
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || 'Failed to fetch crop details.');
+        const detailsContainer = document.getElementById('crop-details');
+        detailsContainer.innerHTML = `
+          <p><strong>Best Practices:</strong></p>
+          <p>${data.practices}</p>
+        `;
+      } catch (error) {
+        console.error('Error fetching crop details:', error);
+        document.getElementById('crop-details').textContent = 'Failed to load crop details.';
+      }
     }
 
-    const detailsContainer = document.getElementById('crop-details');
-    detailsContainer.innerHTML = `
-      <h2>Best Practices for ${crop}</h2>
-      <p>${data.practices}</p>
-    `;
-  } catch (error) {
-    console.error('Error fetching crop details:', error);
-    document.getElementById('crop-details').textContent = 'Failed to load crop details.';
-  }
-}
-
-fetchCropDetails();
-
-
+    fetchCropDetails();
   </script>
 </body>
 </html>
